@@ -15,7 +15,7 @@ const TitleH1 = styled.h1`
 function Header() {
   return (
     <HeaderContainer>
-      <TitleH1>keeper</TitleH1>
+      <TitleH1>What's the plan?</TitleH1>
     </HeaderContainer>
   );
 }

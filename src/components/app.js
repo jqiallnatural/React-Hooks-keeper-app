@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { createGlobalStyle } from "styled-components";
 
 import Header from "./header";
 import Footer from "./footer";
-import Note from "./note";
-import notes from "../data";
+import { Note } from "./note";
+import CreateSticky from "./createSticky";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -21,19 +21,41 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const App = () => (
+const App = () => {
+  const [notes, setNotes] = useState([]);
+
+  const addNote = (newNote) => {
+    setNotes((prevNotes) => {
+      return [...prevNotes, newNote];
+    });
+  };
+
+  // Using filter to end up with an array that contains everything from previous notes other than index matches with the id of the notes that are to be deleted
+  const deleteNote = (id) => {
+    setNotes((prevNotes) => {
+      return prevNotes.filter((noteitem, index) => {
+        return index !== id;
+      });
+    });
+  };
+
+  return (
     <div>
       <GlobalStyle />
       <Header />
-      {notes.map((noteItem) => 
-          <Note
-            key={noteItem.key}
-            title={noteItem.title}
-            content={noteItem.content}
-          />
-      )}
+      <CreateSticky onAdd={addNote} />
+      {notes.map((noteItem, index) => (
+        <Note
+          key={index}
+          id={index}
+          title={noteItem.title}
+          content={noteItem.content}
+          onDelete={deleteNote}
+        />
+      ))}
       <Footer />
     </div>
-)
+  );
+};
 
 export default App;
